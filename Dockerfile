@@ -9,8 +9,11 @@ RUN unzip /tmp/pocketbase_0.6.0_linux_amd64.zip && rm -rf /tmp/
 
 FROM alpine
 
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 WORKDIR /app
 
 COPY --from=builder /app/pocketbase /app/
 
-ENTRYPOINT [ "/app/pocketbase","serve" ]
+EXPOSE 8090
+
+ENTRYPOINT [ "/app/pocketbase","serve","--http=0.0.0.0:8090" ]
